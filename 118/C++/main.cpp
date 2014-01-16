@@ -12,21 +12,19 @@
 
 #include <stdio.h>
 
-int
-cycle(m)
-     int m;
+int cycle(int m)
 /* return number of elements in the 3n+1 cycle for m */
 {
     int i = 1;
 
     while (m != 1){
-	if (m % 2 == 0){
-	    m = m/2;
-	}
-	else{
-	    m = 3*m+1;
-	}
-	i++;
+		if (m % 2 == 0){
+			m = m/2;
+		}
+		else{
+			m = 3*m+1;
+		}
+		i++;
     }
     return i;
 }
