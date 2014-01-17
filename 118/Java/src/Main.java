@@ -74,8 +74,7 @@ class Main
         
         do {
 	        while ((input = Main.ReadLn (255)) != null)
-	        {
-	          
+	        {	          
 	          idata = new StringTokenizer (input);
 	          
 	          if(idata.hasMoreTokens())
@@ -96,6 +95,8 @@ class Main
 	        	  continue;
 	          
 	        }
+	        
+	        if(input == null) break;
 	        
 	        input = Main.ReadLn (255);
 	        idata = new StringTokenizer (input);
