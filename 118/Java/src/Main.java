@@ -65,7 +65,7 @@ class Main
           
           if(idata.hasMoreTokens()) {
         	  height = Integer.parseInt (idata.nextToken());
-        	  g = new Grid(width, height);
+        	  g = new Grid(width+1, height+1);
         	  break;
           } else
         	  continue;          
@@ -121,6 +121,10 @@ class Main
     		return !smell[x][y];
     	}
     	
+    	public boolean isValid(int x, int y) {
+    		return x >= 0 && x < width & y >= 0 && y < height;
+    	}
+    	
     	public void fellOff(int x, int y) {
     		smell[x][y] = true;
     	}
@@ -137,7 +141,8 @@ class Main
     private class Robot {
     	private int x;
     	private int y;
-    	private char dir;    	
+    	private char dir;
+    	private boolean isLost = false;
     	
     	private Grid g;
     	
@@ -150,7 +155,7 @@ class Main
     	
     	@Override
     	public String toString() {
-    		if(isLost())
+    		if(isLost)
     			return x + " " + y + " " + dir + " LOST";
     		else
     			return x + " " + y + " " + dir;
@@ -163,7 +168,7 @@ class Main
     	}
     	
     	private void step(char instruction) {
-    		if(isLost())
+    		if(isLost)
     			return;
     		switch (instruction) {
     		case 'L':
@@ -176,6 +181,7 @@ class Main
     			moveForward();
     			break;
     		}
+    		//System.out.println(this);
     	}
     	
     	private void turnLeft() {
@@ -229,18 +235,18 @@ class Main
     			x++;
     			break;
     		}
-    		if(isLost() && !g.canFallOff(prevX, prevY)) {	//if the robot fell off from a smelly area then revert x and y back
+    		if(!g.isValid(x, y) && !g.canFallOff(prevX, prevY)) {	//if the robot fell off from a smelly area then revert x and y back
+    			x = prevX;
+    			y = prevY;
+    			//ignore instruction
+    		}
+    		if(!g.isValid(x, y)) {
+    			isLost = true;
+    			g.fellOff(prevX, prevY);
     			x = prevX;
     			y = prevY;
     		}
-    		if(isLost()) {
-    			g.fellOff(prevX, prevY);
-    		}
-    	}
-    	
-    	private boolean isLost() {
-    		 return x < 0 || x >= g.getWidth() || y < 0 || y >= g.getHeight();    		 
-    	}
+    	}    	
     	
     }
 }
