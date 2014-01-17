@@ -31,7 +31,7 @@ class Main
 
     public static void main (String args[])  // entry point from OS
     {
-        Main myWork = new Main();  // create a dinamic instance
+        Main myWork = new Main();  // create a dynamic instance
         myWork.Begin();            // the true entry point
     }
     
@@ -72,9 +72,10 @@ class Main
                              
         }
         
-        while(true) {
+        do {
 	        while ((input = Main.ReadLn (255)) != null)
 	        {
+	          
 	          idata = new StringTokenizer (input);
 	          
 	          if(idata.hasMoreTokens())
@@ -102,7 +103,7 @@ class Main
 	        r.simulate(instructions);
 	        
 	        System.out.println(r);
-        }
+        } while (input != null);
     }
     
     private class Grid {
