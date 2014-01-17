@@ -6,7 +6,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <vector>
 
 using namespace std;
 
@@ -28,7 +27,7 @@ const int DIRECTION_WEST = 3;
 const int NUM_DIRECTIONS = 4;
 
 /**
-*	2D grid. Stores "scents" left by robots;
+*	Contains 2D grid. Stores "scents" left by robots;
 */
 class World
 {
@@ -71,9 +70,6 @@ public:
 	bool** scentGrid;
 };
 
-/**
- *	Moves and turns.
- */
 class Robot
 {
 public:
@@ -101,10 +97,11 @@ public:
 
 		switch ( direction )
 		{
-		case DIRECTION_NORTH:	tempY++; break;
-		case DIRECTION_EAST:	tempX++; break;
-		case DIRECTION_SOUTH:	tempY--; break;
-		case DIRECTION_WEST:	tempX--; break;
+		case DIRECTION_NORTH:	tempY++;	break;
+		case DIRECTION_EAST:	tempX++;	break;
+		case DIRECTION_SOUTH:	tempY--;	break;
+		case DIRECTION_WEST:	tempX--;	break;
+		default:				return;		break;
 		};
 
 		// If robot will move off of world
@@ -143,7 +140,7 @@ public:
 	{
 		uint index = 0;
 		char c;
-		while ( index < instructions.length() && !isOffWorld)
+		while ( index < instructions.length() && !isOffWorld )
 		{
 			c = instructions.at( index );
 			switch ( c )
@@ -165,14 +162,18 @@ public:
 		case DIRECTION_WEST:	directionAsChar = 'W'; break;
 		}
 
-		cout << x << " " << y << " " << directionAsChar;
+		output += to_string( x );
+		output += " ";
+		output += to_string( y );
+		output += " ";
+		output += directionAsChar;
 
 		if ( isOffWorld )
 		{
-			cout << " " << "LOST";
+			output += " LOST";
 		}
 
-		cout << "\n";
+		output += "\n";
 	}
 
 	World& world;
@@ -181,7 +182,11 @@ public:
 	int direction;
 	bool isOffWorld;
 	string instructions;
+
+	static string output;
 };
+
+string Robot::output = "";
 
 void testFromFile()
 {
@@ -194,7 +199,7 @@ void testFromFile()
 
 	World world( topRightX + 1, topRightY + 1 );
 
-	while ( !testFile.eof( ) )
+	while ( !testFile.eof() )
 	{
 		Robot robot( world );
 
@@ -214,8 +219,10 @@ void testFromFile()
 
 		testFile >> robot.instructions;
 
-		robot.runInstructions( );
+		robot.runInstructions();
 	}
+
+	cout << Robot::output;
 
 	testFile.close( );
 }
@@ -252,6 +259,8 @@ int main()
 
 		robot.runInstructions();
 	}
+
+	cout << Robot::output;
 
 	return 0;
 }
