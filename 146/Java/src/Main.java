@@ -40,6 +40,14 @@ class Main
         String input;
         StringTokenizer idata;
         
+        /*int num = 1;
+        String start = "aaabbc";
+        System.out.println(num++ + ": " + start);
+        do {
+        	start = next(start);
+        	System.out.println(num++ + ": " + start);
+        } while(!start.equals("No Successor") && num <= 60);*/
+        
         while ((input = Main.ReadLn (255)) != null)
         {
           idata = new StringTokenizer (input);                          
@@ -47,7 +55,7 @@ class Main
           if(i.equals("#"))
         	  return;
           System.out.println(next(i));
-        }                                 
+        }                           
         
     }
     
@@ -61,7 +69,7 @@ class Main
     		}
     	}
     	return -1;
-    }
+    }       
     
     public static String next(String s) {
     	if(s.length() < 2)
@@ -71,7 +79,8 @@ class Main
     		return "No Successor";
     	char targetLetter = s.charAt(targetLetterIndex);
     	int insertionIndex;
-    	for(insertionIndex = targetLetterIndex-1; insertionIndex >= 0 && s.charAt(insertionIndex) > targetLetter; insertionIndex--);
+    	for(insertionIndex = targetLetterIndex-1; insertionIndex >= 0 && s.charAt(insertionIndex) >= targetLetter; insertionIndex--);
+    	
     	String first = s.substring(0, insertionIndex);
     	String between = s.substring(insertionIndex, targetLetterIndex);
     	String after = s.substring(targetLetterIndex+1);
