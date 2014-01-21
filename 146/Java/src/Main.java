@@ -1,5 +1,3 @@
-// @JUDGE_ID:  1000AA  100  Java  "Easy algorithm"
-
 import java.io.*;
 import java.util.*;
 
@@ -45,8 +43,43 @@ class Main
         while ((input = Main.ReadLn (255)) != null)
         {
           idata = new StringTokenizer (input);                          
-                             
-        }
-                
+          String i = idata.nextToken();
+          if(i.equals("#"))
+        	  return;
+          System.out.println(next(i));
+        }                                 
+        
     }
+    
+    //searches for the first letter from the right that has a smaller letter to the left
+    public static int search(String s) {
+    	for(int i = s.length()-1; i >= 0; i--) {
+    		char letter = s.charAt(i);
+    		for(int j = i - 1; j >= 0; j--) {
+    			if(s.charAt(j) < letter)
+    				return i;
+    		}
+    	}
+    	return -1;
+    }
+    
+    public static String next(String s) {
+    	if(s.length() < 2)
+    		return "No Successor";
+    	int targetLetterIndex = search(s);
+    	if(targetLetterIndex == -1)
+    		return "No Successor";
+    	char targetLetter = s.charAt(targetLetterIndex);
+    	int insertionIndex;
+    	for(insertionIndex = targetLetterIndex-1; insertionIndex >= 0 && s.charAt(insertionIndex) > targetLetter; insertionIndex--);
+    	String first = s.substring(0, insertionIndex);
+    	String between = s.substring(insertionIndex, targetLetterIndex);
+    	String after = s.substring(targetLetterIndex+1);
+    	char[] everythingElse = (between + after).toCharArray();
+    	Arrays.sort(everythingElse);
+    	String everythingElseString = new String(everythingElse);
+    	return first + targetLetter + everythingElseString;
+    	
+    }
+    
 }
