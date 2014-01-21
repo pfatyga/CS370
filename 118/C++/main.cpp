@@ -3,8 +3,8 @@
  *	http://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=3&page=show_problem&problem=54
  */
 
+#include <stdio.h>
 #include <iostream>
-#include <fstream>
 #include <string>
 
 using namespace std;
@@ -25,6 +25,10 @@ const int DIRECTION_EAST = 1;
 const int DIRECTION_SOUTH = 2;
 const int DIRECTION_WEST = 3;
 const int NUM_DIRECTIONS = 4;
+
+const int TURN_RIGHT[] = { DIRECTION_EAST, DIRECTION_SOUTH, DIRECTION_WEST, DIRECTION_NORTH };
+const int TURN_LEFT[] =  { DIRECTION_WEST, DIRECTION_NORTH, DIRECTION_EAST, DIRECTION_SOUTH };
+const char DIRECTIONS_AS_CHARS[] = { 'N', 'E', 'S', 'W' };
 
 /**
 *	Contains 2D grid. Stores "scents" left by robots;
@@ -50,19 +54,21 @@ public:
 
 	~World( )
 	{
-		if ( scentGrid == NULL )
+		if ( scentGrid != NULL )
 		{
-			return;
+			for ( int i = 0; i < width; i++ )
+			{
+				if ( scentGrid[i] != NULL )
+				{
+					delete[] scentGrid[i];
+					scentGrid[i] = NULL;
+				}
+			}
+
+			delete[] scentGrid;
+
+			scentGrid = NULL;
 		}
-
-		for ( int i = 0; i < width; i++ )
-		{
-			delete[] scentGrid[i];
-		}
-
-		delete[] scentGrid;
-
-		scentGrid = NULL;
 	}
 
 	int width;
@@ -73,7 +79,7 @@ public:
 class Robot
 {
 public:
-	Robot( World& world)
+	Robot( World& world )
 		: world( world )
 		, x( 0 )
 		, y( 0 )
@@ -82,37 +88,29 @@ public:
 		, instructions( "" )
 	{}
 
-	Robot( World& world, int x, int y, int direction, string instructions )
-		: world( world )
-		, x( x )
-		, y( y )
-		, direction( direction )
-		, instructions( instructions )
-	{}
-
 	void moveForward()
 	{
-		int tempX = x;
-		int tempY = y;
+		int nextX = x;
+		int nextY = y;
 
 		switch ( direction )
 		{
-		case DIRECTION_NORTH:	tempY++;	break;
-		case DIRECTION_EAST:	tempX++;	break;
-		case DIRECTION_SOUTH:	tempY--;	break;
-		case DIRECTION_WEST:	tempX--;	break;
+		case DIRECTION_NORTH:	nextY++;	break;
+		case DIRECTION_EAST:	nextX++;	break;
+		case DIRECTION_SOUTH:	nextY--;	break;
+		case DIRECTION_WEST:	nextX--;	break;
 		default:				return;		break;
 		};
 
 		// If robot will move off of world
-		if ( tempX < 0 || tempX >= world.width || tempY < 0 || tempY >= world.height )
+		if ( nextX < 0 || nextX >= world.width || nextY < 0 || nextY >= world.height )
 		{
 			// If there is a scent at current position, do nothing
 			if ( world.scentGrid[x][y] == true )
 			{
 				return;
 			}
-			// Otherwise, leave scent then move off world
+			// Otherwise, leave scent
 			else
 			{
 				world.scentGrid[x][y] = true;
@@ -121,19 +119,19 @@ public:
 		}
 		else
 		{
-			x = tempX;
-			y = tempY;
+			x = nextX;
+			y = nextY;
 		}
 	}
 
 	void turnLeft()
 	{
-		direction == 0 ? direction = NUM_DIRECTIONS - 1 : direction--;
+		direction = TURN_LEFT[direction];
 	}
 
 	void turnRight()
 	{
-		direction = ( direction + 1 ) % NUM_DIRECTIONS;
+		direction = TURN_RIGHT[direction];
 	}
 
 	void runInstructions()
@@ -153,27 +151,14 @@ public:
 			index++;
 		}
 
-		char directionAsChar;
-		switch ( direction )
-		{
-		case DIRECTION_NORTH:	directionAsChar = 'N'; break;
-		case DIRECTION_EAST:	directionAsChar = 'E'; break;
-		case DIRECTION_SOUTH:	directionAsChar = 'S'; break;
-		case DIRECTION_WEST:	directionAsChar = 'W'; break;
-		}
-
-		output += to_string( x );
-		output += " ";
-		output += to_string( y );
-		output += " ";
-		output += directionAsChar;
+		cout << x << " " << y << " " << DIRECTIONS_AS_CHARS[direction];
 
 		if ( isOffWorld )
 		{
-			output += " LOST";
+			cout << " LOST";
 		}
 
-		output += "\n";
+		cout << "\n";
 	}
 
 	World& world;
@@ -182,58 +167,23 @@ public:
 	int direction;
 	bool isOffWorld;
 	string instructions;
-
-	static string output;
 };
-
-string Robot::output = "";
-
-void testFromFile()
-{
-	ifstream testFile;
-	testFile.open( "test.txt" );
-
-	int topRightX, topRightY;
-	testFile >> topRightX;
-	testFile >> topRightY;
-
-	World world( topRightX + 1, topRightY + 1 );
-
-	while ( !testFile.eof() )
-	{
-		Robot robot( world );
-
-		// Get robot's position, direction, and instructions
-		testFile >> robot.x;
-		testFile >> robot.y;
-
-		char directionAsChar;
-		testFile >> directionAsChar;
-		switch ( directionAsChar )
-		{
-		case 'N': robot.direction = DIRECTION_NORTH;	break;
-		case 'E': robot.direction = DIRECTION_EAST;		break;
-		case 'S': robot.direction = DIRECTION_SOUTH;	break;
-		case 'W': robot.direction = DIRECTION_WEST;		break;
-		};
-
-		testFile >> robot.instructions;
-
-		robot.runInstructions();
-	}
-
-	cout << Robot::output;
-
-	testFile.close( );
-}
 
 int main()
 {
-	//testFromFile();
-
 	int topRightX, topRightY;
 	cin >> topRightX;
 	cin >> topRightY;
+
+	if ( topRightX > 50 )
+	{
+		topRightX = 50;
+	}
+
+	if ( topRightY > 50 )
+	{
+		topRightY = 50;
+	}
 
 	World world( topRightX + 1, topRightY + 1 );
 
@@ -259,8 +209,6 @@ int main()
 
 		robot.runInstructions();
 	}
-
-	cout << Robot::output;
 
 	return 0;
 }
