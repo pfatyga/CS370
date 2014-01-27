@@ -1,6 +1,8 @@
 import java.io.*;
 import java.math.BigInteger;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 class Main
 {
@@ -47,17 +49,18 @@ class Main
         while ((input = Main.ReadLn (255)) != null)
         {
           idata = new StringTokenizer (input);                          
-          String i = idata.nextToken();
-          
-          String basecase = F(inverseFib(i.length())-1);
-          System.out.println(basecase);
+          String c = idata.nextToken();
+          int s = inverseFib(c.length())-1;
+          String basecase = F(s);
+          int basecaseOccurences = match(basecase, c);
+          //System.out.println("basecase: " + basecase + ", numOccurences: " + basecaseOccurences);
         }                      
         
         
     }
     
     //dont call for large n pls
-    public String F(int n) {    	
+    public static String F(int n) {    	
     	String prev = "0";
     	String current = "1";
     	for(int a = 1;a < n; a++) {
@@ -68,7 +71,7 @@ class Main
     	return current;
     }
     
-    public int inverseFib(int length) {    	
+    public static int inverseFib(int length) {    	
     	
     	int num = 1;
     	int prev = 0;
@@ -78,6 +81,16 @@ class Main
     		prev = current - prev; 
     	}
     	return num;
+    }
+    
+    public static int match(String str, String pattern) {    	
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(str);
+        int count = 0;
+        while (m.find()){
+        	count +=1;
+        }
+        return count;
     }
     
 }
