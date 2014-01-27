@@ -6,8 +6,6 @@ import java.util.regex.Pattern;
 
 class Main
 {
-	//private static final int NUM_FIBS = 100;
-	//private static BigInteger fibonacciNums[] = new BigInteger[NUM_FIBS+1];
     static String ReadLn (int maxLg)  // utility function to read from stdin
     {
         byte lin[] = new byte [maxLg];
@@ -51,8 +49,12 @@ class Main
           idata = new StringTokenizer (input);                          
           String c = idata.nextToken();
           int s = inverseFib(c.length())-1;
-          String basecase = F(s);
+          String basecase = F(s);         
+          String mergeFirst = basecase.substring(basecase.length()-(c.length()-1)) + F(s-1).substring(0, c.length());
+          String secondMerge = basec
           int basecaseOccurences = match(basecase, c);
+          int mergeFirstOccurences = match(mergeFirst, c);
+          
           //System.out.println("basecase: " + basecase + ", numOccurences: " + basecaseOccurences);
         }                      
         
@@ -71,6 +73,7 @@ class Main
     	return current;
     }
     
+    //find first fibonacci number >= length
     public static int inverseFib(int length) {    	
     	
     	int num = 1;
