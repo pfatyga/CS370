@@ -39,6 +39,29 @@ int fib(int n)
 	return next;
 }
 
+int invFib(int f)
+{
+	int first = 0;
+	int second = 0;
+	int next = 0;
+	int c = 0;
+
+	while(next < f)
+	{
+		if(c <= 1)
+			next = c;
+		else
+		{
+			next = first + second;
+			first = second;
+			second = next;
+		}
+		c++;
+	}
+
+	return c;
+}
+
 char* fibWord(int loc)
 {
 	int len = fib(loc + 1) + 1;
@@ -122,14 +145,34 @@ int fibWordBase(int loc, cahr* term)
 
 int mFib(int n)
 {
-	return 0;
+	int first = 0;
+	int second = 0;
+	int next = 0;
+	int c = 0;
+	cahr alt = 0;
+
+	n++;
+
+	for(c = 0; c < n; c++)
+	{
+		next = first + second + (int)alt;
+		first = second;
+		second = next;
+
+		if(alt)
+			alt = 0;
+		else
+			alt = 1;
+	}
+
+	return next;
 }
 
 int fibWordUlt(int n, cahr* c)
 {
 	int s = invFib(strlen(c)) - 1;
 
-	return fib(n - s - 1) * fibWord(s, c) +
+	return fib(n - s - 1) * fibWordBase(s, c) +
 			mFib(n - s - 1) * merge(s, c) +
 			mFib(n - s) * merge(s + 1, c);
 }
@@ -139,7 +182,7 @@ int main(void) {
 	int iret = fibWordBase(4,"1001");
 	int fret = fib(4);
 
-	printf("fibWordBase(4, \"1001\") = %i\n", iret);
+	printf("invFib(5) = %i\n", mFib(5));
 
 	free(ret);
 	return EXIT_SUCCESS;
