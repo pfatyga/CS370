@@ -41,35 +41,70 @@ class Main
     void Begin()
     {
         String input;
-        StringTokenizer idata;
+        StringTokenizer idata;               
         
-        while ((input = Main.ReadLn (255)) != null)
-        {
-          idata = new StringTokenizer (input);                          
+//        for(int i = 0; i <= 100; i++)
+//        	System.out.println(i + ": " + mFib(i));
+        
+        //while ((input = Main.ReadLn (255)) != null)
+        //{  
+        int caseNum = 1;
+        while((input = Main.ReadLn (255)) != null) {
+    	  int n = Integer.parseInt(input);
+          input = Main.ReadLn (255);
+          idata = new StringTokenizer (input);
           String c = idata.nextToken();
+          
           int s = inverseFib(c.length())-1;
           //String basecase = F(s);         
           //String mergeFirst = basecase.substring(basecase.length()-(c.length()-1)) + F(s-1).substring(0, c.length());
           String secondMerge = F(s+2);
           //F(s).length() == fibonacci(s+1)
-          int basecaseOccurences = match(secondMerge.substring(0, (fibonacci(s+1))), c);
-          int mergeFirstOccurences = match(secondMerge.substring(fibonacci(s+1) - (c.length()-1), fibonacci(s+1) + Math.min(fibonacci(s), c.length()-1)), c);
-          int mergeSecondOccurences = match(secondMerge.substring(fibonacci(s+2) - (c.length()-1), fibonacci(s+2) + c.length()-1), c);
+          int basecaseOccurences = match(secondMerge.substring(0, (fib(s+1).intValue())), c);
+          int mergeFirstOccurences = match(secondMerge.substring(fib(s+1).intValue() - (c.length()-1), fib(s+1).intValue() + Math.min(fib(s).intValue(), c.length()-1)), c);
+          int mergeSecondOccurences = match(secondMerge.substring(fib(s+2).intValue() - (c.length()-1), fib(s+2).intValue() + c.length()-1), c);
           
-          System.out.println(secondMerge.substring(fibonacci(s+1) - (c.length()-1), fibonacci(s+1) + Math.min(fibonacci(s), c.length()-1)));
-          System.out.println(secondMerge.substring(fibonacci(s+2) - (c.length()-1), fibonacci(s+2) + c.length()-1));
+          //System.out.println(secondMerge.substring(0, (fib(s+1))));
+          //System.out.println(secondMerge.substring(fib(s+1) - (c.length()-1), fib(s+1) + Math.min(fib(s), c.length()-1)));
+          //System.out.println(secondMerge.substring(fib(s+2) - (c.length()-1), fib(s+2) + c.length()-1));
           
-          System.out.println("basecaseOccurences: " + basecaseOccurences + ", mergeFirstOccurences: " + mergeFirstOccurences + ", mergeSecondOccurences: " + mergeSecondOccurences);
-        }                      
+          //System.out.println("basecaseOccurences: " + basecaseOccurences + ", mergeFirstOccurences: " + mergeFirstOccurences + ", mergeSecondOccurences: " + mergeSecondOccurences);
+   
+          System.out.println("Case " + (caseNum++) + ": " + fib(n - s + 1).multiply(BigInteger.valueOf(basecaseOccurences)).add(mFib(n-s).multiply(BigInteger.valueOf(mergeFirstOccurences))).add(mFib(n - s - 1).multiply(BigInteger.valueOf(mergeSecondOccurences))));
+        };
         
-        
-    }       
+    }
+    
+    //1,1,3,4,8,12,21,33
+    public static BigInteger mFib(int n)
+    {
+    	BigInteger first = new BigInteger("0");
+    	BigInteger second = new BigInteger("0");
+    	BigInteger next = new BigInteger("0");
+    	BigInteger alt = new BigInteger("0");
+
+    	n++;
+
+    	for(int c = 0; c < n; c++)
+    	{
+    		next = first.add(second).add(alt);
+    		first = second;
+    		second = next;
+
+    		if(!alt.equals(BigInteger.ZERO))
+    			alt = BigInteger.ZERO;
+    		else
+    			alt = BigInteger.ONE;
+    	}
+
+    	return next;
+    }
     
     //dont call for large n pls
     public static String F(int n) {    	
     	String prev = "0";
     	String current = "1";
-    	for(int a = 1;a < n; a++) {
+    	for(int a = 1; a < n; a++) {
     		String temp = current;
     		current += prev;
     		prev = temp;
@@ -77,12 +112,12 @@ class Main
     	return current;
     }
     
-    public static int fibonacci(int n) {
-    	int prev = 0;
-    	int current = 1;
-    	for(int a = 1;a < n; a++) {
-    		int temp = current;
-    		current += prev;
+    public static BigInteger fib(int n) {
+    	BigInteger prev = new BigInteger("0");
+    	BigInteger current = new BigInteger("1");
+    	for(int a = 1; a < n; a++) {
+    		BigInteger temp = current;
+    		current = current.add(prev);
     		prev = temp;
     	}
     	return current;
