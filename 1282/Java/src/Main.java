@@ -55,6 +55,18 @@ class Main
           idata = new StringTokenizer (input);
           String c = idata.nextToken();
           
+          if(c.equals("1")) {
+        	  System.out.println("Case " + (caseNum++) + ": " + fib(n));
+        	  continue;
+          }
+          if(c.equals("0")) {
+        	  if(n == 0)
+        		  System.out.println("Case " + (caseNum++) + ": " + 1);
+        	  else
+        		  System.out.println("Case " + (caseNum++) + ": " + fib(n-1));
+        	  continue;
+          }
+          
           int s = inverseFib(c.length())-1;
           //String basecase = F(s);         
           //String mergeFirst = basecase.substring(basecase.length()-(c.length()-1)) + F(s-1).substring(0, c.length());
