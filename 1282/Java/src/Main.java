@@ -43,23 +43,27 @@ class Main
         String input;
         StringTokenizer idata;
         
-        
         while ((input = Main.ReadLn (255)) != null)
         {
           idata = new StringTokenizer (input);                          
           String c = idata.nextToken();
           int s = inverseFib(c.length())-1;
-          String basecase = F(s);         
-          String mergeFirst = basecase.substring(basecase.length()-(c.length()-1)) + F(s-1).substring(0, c.length());
-          String secondMerge = basec
-          int basecaseOccurences = match(basecase, c);
-          int mergeFirstOccurences = match(mergeFirst, c);
+          //String basecase = F(s);         
+          //String mergeFirst = basecase.substring(basecase.length()-(c.length()-1)) + F(s-1).substring(0, c.length());
+          String secondMerge = F(s+2);
+          //F(s).length() == fibonacci(s+1)
+          int basecaseOccurences = match(secondMerge.substring(0, (fibonacci(s+1))), c);
+          int mergeFirstOccurences = match(secondMerge.substring(fibonacci(s+1) - (c.length()-1), fibonacci(s+1) + Math.min(fibonacci(s), c.length()-1)), c);
+          int mergeSecondOccurences = match(secondMerge.substring(fibonacci(s+2) - (c.length()-1), fibonacci(s+2) + c.length()-1), c);
           
-          //System.out.println("basecase: " + basecase + ", numOccurences: " + basecaseOccurences);
+          System.out.println(secondMerge.substring(fibonacci(s+1) - (c.length()-1), fibonacci(s+1) + Math.min(fibonacci(s), c.length()-1)));
+          System.out.println(secondMerge.substring(fibonacci(s+2) - (c.length()-1), fibonacci(s+2) + c.length()-1));
+          
+          System.out.println("basecaseOccurences: " + basecaseOccurences + ", mergeFirstOccurences: " + mergeFirstOccurences + ", mergeSecondOccurences: " + mergeSecondOccurences);
         }                      
         
         
-    }
+    }       
     
     //dont call for large n pls
     public static String F(int n) {    	
@@ -67,6 +71,17 @@ class Main
     	String current = "1";
     	for(int a = 1;a < n; a++) {
     		String temp = current;
+    		current += prev;
+    		prev = temp;
+    	}
+    	return current;
+    }
+    
+    public static int fibonacci(int n) {
+    	int prev = 0;
+    	int current = 1;
+    	for(int a = 1;a < n; a++) {
+    		int temp = current;
     		current += prev;
     		prev = temp;
     	}
