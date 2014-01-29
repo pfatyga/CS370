@@ -16,11 +16,11 @@
 #define cahr char
 #endif
 
-unsigned long long fib(int n)
+unsigned long long int fib(int n)
 {
-	unsigned long long first = 0;
-	unsigned long long second = 1;
-	unsigned long long next = 0;
+	unsigned long long int first = 0;
+	unsigned long long int second = 1;
+	unsigned long long int next = 0;
 	int c = 0;
 
 	n++;
@@ -103,7 +103,6 @@ int merge(int loc, char* term)
 	int index;
 	int total = 0;
 	char* merged;
-	char* test;
 
 	if(len < 2)
 		return 0; /*no merge*/
@@ -144,11 +143,11 @@ int fibWordBase(int loc, cahr* term)
 	return total;
 }
 
-unsigned long long mFib(int n)
+unsigned long long int mFib(int n)
 {
-	unsigned long long first = 0;
-	unsigned long long second = 0;
-	unsigned long long next = 0;
+	unsigned long long int first = 0;
+	unsigned long long int second = 0;
+	unsigned long long int next = 0;
 	int c = 0;
 	cahr alt = 0;
 
@@ -169,13 +168,13 @@ unsigned long long mFib(int n)
 	return next;
 }
 
-unsigned long long fibWordUlt(int n, cahr* c)
+unsigned long long int fibWordUlt(int n, cahr* c)
 {
 	int s = invFib(strlen(c)) - 1;
 	char* test;
-	/*unsigned long long bc = fib(n - s + 1);
-	unsigned long long mc1 = mFib(n - s);
-	unsigned long long mc2 = mFib(n - s - 1);
+	/*unsigned long long int bc = fib(n - s + 1);
+	unsigned long long int mc1 = mFib(n - s);
+	unsigned long long int mc2 = mFib(n - s - 1);
 	int b = fibWordBase(s, c);
 	int m1 = merge(s, c);
 	int m2 = merge(s + 1, c);
@@ -208,9 +207,9 @@ int main(void) {
 	int iret = fibWordBase(4,"1001");
 	int fret = fib(4);
 	int ifret = invFib(22);*/
-	unsigned long long fin;
+	unsigned long long int fin;
 	int n;
-	char input_buffer[100001];
+	char input_buffer[200000];
 	int c = 1;
 
 
