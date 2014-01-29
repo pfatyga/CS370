@@ -1,20 +1,6 @@
-/*
- ============================================================================
- Name        : 1282_C.c
- Author      :
- Version     :
- Copyright   : Your copyright notice
- Description : Hello World in C, Ansi-style
- ============================================================================
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#ifndef cahr
-#define cahr char
-#endif
 
 unsigned long long int fib(int n)
 {
@@ -67,7 +53,7 @@ char* fibWord(int loc)
 {
 	int len = fib(loc + 1) + 1;
 	int lent = 0;
-	char* ret = (char*)calloc(len, sizeof(cahr));
+	char* ret = (char*)calloc(len, sizeof(char));
 	int i = 2;
 
 	if(loc == 0)
@@ -88,7 +74,6 @@ char* fibWord(int loc)
 	for(i = 2; i < loc; i++)
 	{
 		memcpy(&ret[lent],ret,len);
-		/*printf("%s\n",ret);*/
 		lent += len;
 		len = lent - len;
 	}
@@ -121,20 +106,16 @@ int merge(int loc, char* term)
 	return total;
 }
 
-int fibWordBase(int loc, cahr* term)
+int fibWordBase(int loc, char* term)
 {
-	cahr* word = fibWord(loc);
+	char* word = fibWord(loc);
 	int len = fib(loc + 1);
 	int tlen = strlen(term);
 	int i;
 	int total = 0;
 
-	/*printf("fibWordBase: len = %i\n",len);
-	printf("fibWordBase: tlen = %i\n",tlen);*/
-
 	for(i = 0; i <= (len - tlen); i++)
 	{
-		/*printf("%i\n",i);*/
 		if(strncmp(&term[i],word,tlen) == 0)
 			total++;
 	}
@@ -149,7 +130,7 @@ unsigned long long int mFib(int n)
 	unsigned long long int second = 0;
 	unsigned long long int next = 0;
 	int c = 0;
-	cahr alt = 0;
+	char alt = 0;
 
 	n++;
 
@@ -168,17 +149,10 @@ unsigned long long int mFib(int n)
 	return next;
 }
 
-unsigned long long int fibWordUlt(int n, cahr* c)
+unsigned long long int fibWordUlt(int n, char* c)
 {
 	int s = invFib(strlen(c)) - 1;
 	char* test;
-	/*unsigned long long int bc = fib(n - s + 1);
-	unsigned long long int mc1 = mFib(n - s);
-	unsigned long long int mc2 = mFib(n - s - 1);
-	int b = fibWordBase(s, c);
-	int m1 = merge(s, c);
-	int m2 = merge(s + 1, c);
-	printf("s = %i\nbc = %llu\nmc1 = %llu\nmc2 = %llu\nb = %i\nm1 = %i\nm2 = %i\n",s,bc,mc1,mc2,b,m1,m2);*/
 
 	if(!strcmp(c,"1"))
 		return fib(n);
@@ -189,13 +163,13 @@ unsigned long long int fibWordUlt(int n, cahr* c)
 		else
 			return 1;
 	}
-	else if(!strcmp(c,"-"))
+	/*else if(!strcmp(c,"-"))
 	{
 		test = fibWord(n);
 		printf("%s\n",test);
 		free(test);
 		return 0;
-	}
+	}*/
 
 	return fib(n - s + 1) * fibWordBase(s, c) +
 			mFib(n - s) * merge(s, c) +
@@ -203,15 +177,10 @@ unsigned long long int fibWordUlt(int n, cahr* c)
 }
 
 int main(void) {
-	/*char* ret = fibWord(5);
-	int iret = fibWordBase(4,"1001");
-	int fret = fib(4);
-	int ifret = invFib(22);*/
 	unsigned long long int fin;
 	int n;
 	char input_buffer[200000];
 	int c = 1;
-
 
 	while(scanf("%i\n%s",&n,input_buffer) == 2)
 	{
@@ -219,6 +188,5 @@ int main(void) {
 		printf("Case %i: %llu\n", c,fin);
 		c++;
 	}
-	/*free(ret);*/
-	return EXIT_SUCCESS;
+	return 0;
 }
