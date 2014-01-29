@@ -16,11 +16,11 @@
 #define cahr char
 #endif
 
-int fib(int n)
+unsigned long long fib(int n)
 {
-	int first = 0;
-	int second = 1;
-	int next = 0;
+	unsigned long long first = 0;
+	unsigned long long second = 1;
+	unsigned long long next = 0;
 	int c = 0;
 
 	n++;
@@ -42,7 +42,7 @@ int fib(int n)
 int invFib(int f)
 {
 	int first = 0;
-	int second = 0;
+	int second = 1;
 	int next = 0;
 	int c = 0;
 
@@ -58,6 +58,7 @@ int invFib(int f)
 		}
 		c++;
 	}
+	c--;
 
 	return c;
 }
@@ -129,13 +130,13 @@ int fibWordBase(int loc, cahr* term)
 	int i;
 	int total = 0;
 
-	/*printf("len: %i\n",len);*/
-	/*printf("tlen: %i\n",tlen);*/
+	/*printf("fibWordBase: len = %i\n",len);
+	printf("fibWordBase: tlen = %i\n",tlen);*/
 
-	for(i = 0; i < (len - tlen); i++)
+	for(i = 0; i <= (len - tlen); i++)
 	{
 		/*printf("%i\n",i);*/
-		if(strncmp(term,word,tlen) == 0)
+		if(strncmp(&term[i],word,tlen) == 0)
 			total++;
 	}
 
@@ -143,11 +144,11 @@ int fibWordBase(int loc, cahr* term)
 	return total;
 }
 
-int mFib(int n)
+unsigned long long mFib(int n)
 {
-	int first = 0;
-	int second = 0;
-	int next = 0;
+	unsigned long long first = 0;
+	unsigned long long second = 0;
+	unsigned long long next = 0;
 	int c = 0;
 	cahr alt = 0;
 
@@ -168,22 +169,42 @@ int mFib(int n)
 	return next;
 }
 
-int fibWordUlt(int n, cahr* c)
+unsigned long long fibWordUlt(int n, cahr* c)
 {
 	int s = invFib(strlen(c)) - 1;
+	unsigned long long bc = fib(n - s + 1);
+	unsigned long long mc1 = mFib(n - s);
+	unsigned long long mc2 = mFib(n - s - 1);
+	int b = fibWordBase(s, c);
+	int m1 = merge(s, c);
+	int m2 = merge(s + 1, c);
+	printf("s = %i\nbc = %llu\nmc1 = %llu\nmc2 = %llu\nb = %i\nm1 = %i\nm2 = %i\n",s,bc,mc1,mc2,b,m1,m2);
 
-	return fib(n - s - 1) * fibWordBase(s, c) +
-			mFib(n - s - 1) * merge(s, c) +
-			mFib(n - s) * merge(s + 1, c);
+	if(!strcmp(c,"1"))
+		return fib(n);
+	else if(!strcmp(c,"0"))
+		return fib(n - 1);
+
+	return fib(n - s + 1) * fibWordBase(s, c) +
+			mFib(n - s) * merge(s, c) +
+			mFib(n - s - 1) * merge(s + 1, c);
 }
 
 int main(void) {
-	char* ret = fibWord(5);
+	/*char* ret = fibWord(5);
 	int iret = fibWordBase(4,"1001");
 	int fret = fib(4);
+	int ifret = invFib(22);*/
+	unsigned long long fin;
+	int n;
+	char input_buffer[100];
 
-	printf("invFib(5) = %i\n", mFib(5));
 
-	free(ret);
+	while(scanf("%i %s",&n,input_buffer) == 2)
+	{
+		fin = fibWordUlt(n,input_buffer);
+		printf("RESULT: %llu\n", fin);
+	}
+	/*free(ret);*/
 	return EXIT_SUCCESS;
 }
