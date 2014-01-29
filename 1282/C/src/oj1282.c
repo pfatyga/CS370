@@ -172,18 +172,31 @@ unsigned long long mFib(int n)
 unsigned long long fibWordUlt(int n, cahr* c)
 {
 	int s = invFib(strlen(c)) - 1;
-	unsigned long long bc = fib(n - s + 1);
+	char* test;
+	/*unsigned long long bc = fib(n - s + 1);
 	unsigned long long mc1 = mFib(n - s);
 	unsigned long long mc2 = mFib(n - s - 1);
 	int b = fibWordBase(s, c);
 	int m1 = merge(s, c);
 	int m2 = merge(s + 1, c);
-	printf("s = %i\nbc = %llu\nmc1 = %llu\nmc2 = %llu\nb = %i\nm1 = %i\nm2 = %i\n",s,bc,mc1,mc2,b,m1,m2);
+	printf("s = %i\nbc = %llu\nmc1 = %llu\nmc2 = %llu\nb = %i\nm1 = %i\nm2 = %i\n",s,bc,mc1,mc2,b,m1,m2);*/
 
 	if(!strcmp(c,"1"))
 		return fib(n);
 	else if(!strcmp(c,"0"))
-		return fib(n - 1);
+	{
+		if(n != 0)
+			return fib(n - 1);
+		else
+			return 1;
+	}
+	else if(!strcmp(c,"-"))
+	{
+		test = fibWord(n);
+		printf("%s\n",test);
+		free(test);
+		return 0;
+	}
 
 	return fib(n - s + 1) * fibWordBase(s, c) +
 			mFib(n - s) * merge(s, c) +
@@ -197,13 +210,15 @@ int main(void) {
 	int ifret = invFib(22);*/
 	unsigned long long fin;
 	int n;
-	char input_buffer[100];
+	char input_buffer[100001];
+	int c = 1;
 
 
-	while(scanf("%i %s",&n,input_buffer) == 2)
+	while(scanf("%i\n%s",&n,input_buffer) == 2)
 	{
 		fin = fibWordUlt(n,input_buffer);
-		printf("RESULT: %llu\n", fin);
+		printf("Case %i: %llu\n", c,fin);
+		c++;
 	}
 	/*free(ret);*/
 	return EXIT_SUCCESS;
