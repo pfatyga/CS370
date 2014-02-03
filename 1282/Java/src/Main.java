@@ -47,13 +47,13 @@ class Main
 //        	System.out.println(i + ": " + mFib(i));
         
         //while ((input = Main.ReadLn (255)) != null)
-        //{  
+        //{
+        //System.out.println(F(26))
         int caseNum = 1;
         while((input = Main.ReadLn (255)) != null) {
     	  int n = Integer.parseInt(input);
-          input = Main.ReadLn (255);
-          idata = new StringTokenizer (input);
-          String c = idata.nextToken();
+          input = Main.ReadLn (100001);
+          String c = input;
           
           if(c.equals("1")) {
         	  System.out.println("Case " + (caseNum++) + ": " + fib(n));
