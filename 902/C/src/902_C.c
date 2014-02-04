@@ -1,18 +1,52 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #ifndef NULL
 #define NULL (void*)0
 #endif
 
-//returns most common string in array of strings with length length
-char *mode(char **strings, int length) {
+typedef struct s_node {
+	char c;
+	int count;
+	struct s_node* child;
+	struct s_node* sibling;
+} t_node;
 
-}
-
-//returns all substrings with length n
-char **getSubstrings(char *string, int n) {
-
+t_node *add(t_node *root, char c) {
+	t_node *new_node;	
+	if(root->child == NULL) {
+		new_node = (t_node *)calloc(1, sizeof(t_node));
+		new_node->c = c;
+		new_node->count = 1;
+		new_node->child = NULL;
+		new_node->sibling = NULL;
+		root->child = new_node;
+		return root->child;
+	} else {
+		if(root->child->c == c) {
+			root->child->count++;
+			return root->child;
+		} else {
+			//go through siblings of child
+			root = root->child;
+			while(root->sibling != NULL) {
+				root = root->child;
+				if(root->c == c) {
+					root->count++;
+					return root;
+				}
+			}
+			new_node = (t_node *)calloc(1, sizeof(t_node));
+			new_node->c = c;
+			new_node->count = 1;
+			new_node->child = NULL;
+			new_node->sibling = NULL;
+			root->sibling = new_node;
+			return root->sibling;
+		}
+			
+	}
 }
 
 int main(int argc, char** argv)
@@ -35,11 +69,26 @@ int main(int argc, char** argv)
 
 	while(scanf("%d %s", &n, string) == 2) {
 		num_substrings = strlen(string) - (n-1);
-		substrings = calloc(num_substrings*sizeof(char *));
+		if(num_substrings <= 0)  {
+			printf("Error: N larger than string\n");
+			continue;
+		}
+
+		//generate all substrings of length n
+		substrings = (char **)calloc(num_substrings, sizeof(char *));
 		for(i = 0; i < num_substrings; i++)
-			substrings[i] = calloc((n+1)*sizeof(char));
+			substrings[i] = (char *)calloc((n+1), sizeof(char));
+		for(i = 0; i < num_substrings; i++)
+			strncpy(substrings[i], &string[i], n);
+		
+		//TODO: calculate mode of all substrings
+
+
 
 		printf("length: %d, string = %s, num_substrings = %d\n", n, string, num_substrings);
+		printf("Substrings:\n");
+		for(i = 0; i < num_substrings; i++)
+			printf("%s\n", substrings[i]);
 	}
 
 
