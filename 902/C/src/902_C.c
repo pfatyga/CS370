@@ -13,8 +13,48 @@ typedef struct s_node {
 	struct s_node* sibling;
 } t_node;
 
+char *maxWord(t_node *root) {
+	return 0;
+}
+
+void print_tree_internal(t_node *root, char *currentBranch) {
+	//printf("c: %c, currentBranch: %s\n", root->c, currentBranch);
+	if(root == NULL)
+		return;	
+	if(root->c == 0) {
+		print_tree_internal(root->child, currentBranch);
+		return;
+	}
+	char *newBranch = (char *)calloc(strlen(currentBranch)+2, sizeof(char));
+	strcpy(newBranch, currentBranch);
+	newBranch[strlen(newBranch)] = root->c;	//append c to currentBranch
+	if(root->child == NULL) {
+		//this is a leaf node so print
+		printf("%s: %i\n", newBranch, root->count);
+		free(newBranch);		
+
+	} else {
+		//not a leaf node, continue recursion down child branch
+		print_tree_internal(root->child, newBranch);
+	}
+	
+	if(root->sibling == NULL) {
+		//already handled children and no siblings so we can free currentBranch
+		free(currentBranch);
+		return;
+	} else {
+		//continue recursion on siblings
+		print_tree_internal(root->sibling, currentBranch);
+	}
+
+}
+
+void printTree(t_node *root) {
+	print_tree_internal(root, (char *)calloc(1, sizeof(char)));
+}
+
 t_node *add(t_node *root, char c) {
-	t_node *new_node;	
+	t_node *new_node;
 	if(root->child == NULL) {
 		new_node = (t_node *)calloc(1, sizeof(t_node));
 		new_node->c = c;
@@ -31,7 +71,7 @@ t_node *add(t_node *root, char c) {
 			//go through siblings of child
 			root = root->child;
 			while(root->sibling != NULL) {
-				root = root->child;
+				root = root->sibling;
 				if(root->c == c) {
 					root->count++;
 					return root;
@@ -51,44 +91,50 @@ t_node *add(t_node *root, char c) {
 
 int main(int argc, char** argv)
 {
-//	char input_buffer[101];
-//	char* current_instruction;
-//	int x_max = 0;
-//	int y_max = 0;
-//	int x_coord = 0;
-//	int y_coord = 0;
-//	int i = 0;
-//	char direction;
-//	char* scent = NULL;
 
 	int i = 0;
 	int n = 0;
-	int num_substrings = 0;
-	char **substrings;
+	int k = 0;
+	//int num_substrings = 0;
+	//char **substrings;
 	char string[10000];
+    	t_node *root = calloc(1, sizeof(t_node));
+
 
 	while(scanf("%d %s", &n, string) == 2) {
-		num_substrings = strlen(string) - (n-1);
-		if(num_substrings <= 0)  {
-			printf("Error: N larger than string\n");
-			continue;
+        	for(i = 0; i <= (strlen(string) - n); i++) {
+			t_node *temp = root;
+			int j = i + n;	//abcdefg -> if n = 3 and i = 2 then we want to go through the letters cde so we have to loop from i to j
+			printf("%i to %i\n", i, j);
+			for(k = i; k < j; k++) {
+				printf("Adding %c\n", string[k]);
+				temp = add(temp, string[k]);
+			}
+			printTree(root);
+			printf("--------------------------\n");
 		}
+		printTree(root);
+		//num_substrings = strlen(string) - (n-1);
+		//if(num_substrings <= 0)  {
+		//	printf("Error: N larger than string\n");
+		//	continue;
+		//}
 
 		//generate all substrings of length n
-		substrings = (char **)calloc(num_substrings, sizeof(char *));
-		for(i = 0; i < num_substrings; i++)
-			substrings[i] = (char *)calloc((n+1), sizeof(char));
-		for(i = 0; i < num_substrings; i++)
-			strncpy(substrings[i], &string[i], n);
+		//substrings = (char **)calloc(num_substrings, sizeof(char *));
+		//for(i = 0; i < num_substrings; i++)
+		//	substrings[i] = (char *)calloc((n+1), sizeof(char));
+		//for(i = 0; i < num_substrings; i++)
+		//	strncpy(substrings[i], &string[i], n);
 		
 		//TODO: calculate mode of all substrings
 
 
 
-		printf("length: %d, string = %s, num_substrings = %d\n", n, string, num_substrings);
-		printf("Substrings:\n");
-		for(i = 0; i < num_substrings; i++)
-			printf("%s\n", substrings[i]);
+		//printf("length: %d, string = %s, num_substrings = %d\n", n, string, num_substrings);
+		//printf("Substrings:\n");
+		//for(i = 0; i < num_substrings; i++)
+		//	printf("%s\n", substrings[i]);
 	}
 
 
