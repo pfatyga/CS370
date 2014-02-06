@@ -17,6 +17,19 @@ char *maxWord(t_node *root) {
 	return 0;
 }
 
+void free_tree(t_node *root) {
+	if(root == NULL)
+		return;
+	if(root->c == 0)
+	{
+		free_tree(root->child);
+		return;
+	}
+	free_tree(root->child);
+	free_tree(root->sibling);
+	free(root);
+}
+
 void print_tree_internal(t_node *root, char *currentBranch) {
 	//printf("c: %c, currentBranch: %s\n", root->c, currentBranch);
 	if(root == NULL)
@@ -49,7 +62,7 @@ void print_tree_internal(t_node *root, char *currentBranch) {
 
 }
 
-void printTree(t_node *root) {
+void print_tree(t_node *root) {
 	print_tree_internal(root, (char *)calloc(1, sizeof(char)));
 }
 
@@ -102,18 +115,20 @@ int main(int argc, char** argv)
 
 
 	while(scanf("%d %s", &n, string) == 2) {
+		
         	for(i = 0; i <= (strlen(string) - n); i++) {
 			t_node *temp = root;
 			int j = i + n;	//abcdefg -> if n = 3 and i = 2 then we want to go through the letters cde so we have to loop from i to j
-			printf("%i to %i\n", i, j);
+			//printf("%i to %i\n", i, j);
 			for(k = i; k < j; k++) {
 				printf("Adding %c\n", string[k]);
 				temp = add(temp, string[k]);
 			}
-			printTree(root);
-			printf("--------------------------\n");
+			//print_tree(root);
+			//printf("--------------------------\n");
 		}
-		printTree(root);
+		print_tree(root);
+		free_tree(root);
 		//num_substrings = strlen(string) - (n-1);
 		//if(num_substrings <= 0)  {
 		//	printf("Error: N larger than string\n");
