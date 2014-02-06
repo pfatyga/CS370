@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import java.math.*;
 
 class Main
 {
@@ -96,7 +97,8 @@ class Main
       				}
       				else
       				{
-      					root.get(i).count++;
+      					root.get(i).count = root.get(i).count.add(BigInteger.ONE);
+      					//System.out.println(root.get(i).count.toString());
       				}
       			}
         	  j++;
@@ -107,7 +109,7 @@ class Main
   			for(i = 1; i < root.size(); i++)
   			{
   				temp = root.get(i).getMax();
-  				if(ret.getInt() < temp.getInt())
+  				if(ret.getInt().compareTo(temp.getInt()) < 0)
   					ret = temp;
   			}
   		
@@ -123,13 +125,14 @@ class Main
     private class CharTree
     {
     	public char c;
-    	public long count;
+    	public BigInteger count;
     	ArrayList<CharTree> children;
     	
     	public CharTree(char c)
     	{
     		this.c = c;
-    		this.count = 1;
+    		this.count = BigInteger.ONE;
+    		//System.out.println("Construct: "+ this.count.toString());
     		children = new ArrayList<CharTree>();
     	}
     	
@@ -162,7 +165,8 @@ class Main
     			}
     			else
     			{
-    				this.children.get(i).count++;
+    				this.children.get(i).count = this.children.get(i).count.add(BigInteger.ONE);
+    				//System.out.println(this.children.get(i).count.toString());
     				//System.out.println(this.c + ": count++ = " + this.count);
     			}
     		}
@@ -191,7 +195,7 @@ class Main
     				//System.out.println(this.c + ": " + this.children.get(i).c + ".getMax() Start");
     				temp = this.children.get(i).getMax();
     				//System.out.println(this.c + ": " + this.children.get(i).c + ".getMax() Done");
-    				if(ret.getInt() < temp.getInt())
+    				if(ret.getInt().compareTo(temp.getInt()) < 0)
     					ret = temp;
     			}
     			ret.setString((new Character(this.c)).toString() + ret.getString());
@@ -205,9 +209,9 @@ class Main
     private class StrIntPair
 	{
 		String str;
-		long n;
+		BigInteger n;
 		
-		public StrIntPair(String str, long n)
+		public StrIntPair(String str, BigInteger n)
 		{
 			this.str = str;
 			this.n = n;
@@ -215,6 +219,6 @@ class Main
 		
 		public void setString(String str){this.str = str;}
 		public String getString(){return str;}
-		public long getInt(){return n;}
+		public BigInteger getInt(){return n;}
 	}
 }
