@@ -49,9 +49,8 @@ class Main
 
         //System.out.println();
         //fill & count
-        while ((input = Main.ReadLn (255)) != null)
+        while ((input = Main.ReadLn (255)) != null && (idata = new StringTokenizer (input)).countTokens() != 0)
         {
-          idata = new StringTokenizer (input);
           if(idata.countTokens() == 1)
           {
         	  n = Integer.parseInt (idata.nextToken());
