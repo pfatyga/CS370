@@ -49,12 +49,12 @@ class Main
 
         //System.out.println();
         //fill & count
-        while ((input = Main.ReadLn (255)) != null && (idata = new StringTokenizer (input)).countTokens() != 0)
+        while ((input = Main.ReadLn (1000000)) != null && (idata = new StringTokenizer (input)).countTokens() != 0)
         {
           if(idata.countTokens() == 1)
           {
         	  n = Integer.parseInt (idata.nextToken());
-        	  input = Main.ReadLn (255);
+        	  input = Main.ReadLn (1000000);
         	  text = input;
           }
           else
