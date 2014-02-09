@@ -20,10 +20,9 @@ typedef struct s_word {
 
 t_word *max_word_internal(t_node *root, t_word *current_branch) {
 	if(root == NULL)
-		return;	
+		return NULL;	
 	if(root->c == 0) {
-		max_word_internal(root->child, current_branch);
-		return;
+		return max_word_internal(root->child, current_branch);		
 	}
 	t_word *new_branch = (t_word *)calloc(1, sizeof(t_word));
 	char *new_branch_word = (char *)calloc(strlen(current_branch->word)+2, sizeof(char));
@@ -168,7 +167,7 @@ int main(int argc, char** argv)
 	int n = 0;
 	int k = 0;
 	char string[1000000];	/*max size of input unknown*/
-    	t_node *root = calloc(1, sizeof(t_node));
+    	t_node *root = (t_node *)calloc(1, sizeof(t_node));
 
 
 	while(scanf("%d %s", &n, string) == 2) {
