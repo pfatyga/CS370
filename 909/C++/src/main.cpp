@@ -117,10 +117,9 @@ int main ()
 				print_repeating(previous, count);
 			else
 			{
-				string[count-1] = '\0';
+				string[count] = '\0';
 				print_non_repeating(string, count);
 			}
-			cout << '\n';
 			//reset state
 			current = 0;
 			previous = 0;
