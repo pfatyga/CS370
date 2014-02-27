@@ -9,6 +9,7 @@ int main(int argc, char** argv)
 	vector<vector<vector<unsigned long long>>> move_op(0); //dynamic programming 3d vector base
 	vector<vector<bool>> pawns(0);
 	vector<vector<vector<pair<int, int>>>> net(0);
+	vector<pair<int, int>>::iterator it;
 	int N; //size of grid
 	int M; //max number of turns
 	int T; //number of test cases
@@ -31,7 +32,7 @@ int main(int argc, char** argv)
 		move_op.assign(M, vector<vector<unsigned long long>>(N, vector<unsigned long long>(N,0)));
 		//2d vector with size [N,N] and all initial values = false;
 		pawns.assign(N, vector<bool>(N, false));
-		net.assign(N, vector<vector<pair<int, int>>>(N));
+		net.assign(N, vector<vector<pair<int, int>>>(N, vector<pair<int, int>>(0)));
 		//cout << "vectors made" << endl;
 		//parse input board
 		for (j = 0; j < N; j++)
@@ -82,8 +83,6 @@ int main(int argc, char** argv)
 						}
 					}
 				}
-				else
-					net[i][j] = vector<pair<int,int>>(0);
 			}
 		}
 
@@ -96,8 +95,7 @@ int main(int argc, char** argv)
 				//cout << " i = " << i << endl;
 				for (j = 0; j < N; j++) //y value of space to fill
 				{
-					for (vector<pair<int, int>>::iterator it = net[i][j].begin();
-						it != net[i][j].end(); ++it)
+					for (it = net[i][j].begin(); it != net[i][j].end(); ++it)
 					{
 						//cout << "Adding (" << (*it).first << "," << (*it).second << ")" << endl;
 						move_op[t_r][i][j] += move_op[t_r - 1][(*it).first][(*it).second];
@@ -134,7 +132,7 @@ int main(int argc, char** argv)
 		T--;
 	}
 	//cout << "done" << endl;
-	cin.ignore();
-	cin.ignore();
+	//cin.ignore();
+	//cin.ignore();
 	return 0;
 }
