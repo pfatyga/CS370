@@ -6,18 +6,18 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	vector<vector<vector<unsigned int>>> move_op(0); //dynamic programming 3d vector base
+	vector<vector<vector<unsigned long long>>> move_op(0); //dynamic programming 3d vector base
 	vector<vector<bool>> pawns(0);
-	unsigned short N; //size of grid
-	unsigned short M; //max number of turns
-	unsigned short T; //number of test cases
-	unsigned short S;
-	unsigned short t_r; //turns remaining
-	unsigned short x; //x position of leaper
-	unsigned short y; //y position of leaper
+	int N; //size of grid
+	int M; //max number of turns
+	int T; //number of test cases
+	int S;
+	int t_r; //turns remaining
+	int x; //x position of leaper
+	int y; //y position of leaper
 	string input; //for parsing the input board
-	short i, j; //for loops
-	short k, l;
+	int i, j; //for loops
+	int k, l;
 
 	cin >> T;
 	//cout << "got T" << endl;
@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 		cin >> N >> M >> S;
 		//cout << "got input" << endl;
 		//make 3d vector with size [M,N,N] and all initial values = 0
-		move_op.assign(M, vector<vector<unsigned int>>(N, vector<unsigned int>(N, 0)));
+		move_op.assign(M, vector<vector<unsigned long long>>(N, vector<unsigned long long>(N)));
 		//2d vector with size [N,N] and all initial values = false;
 		pawns.assign(N, vector<bool>(N, false));
 		//cout << "vectors made" << endl;
@@ -94,7 +94,7 @@ int main(int argc, char** argv)
 		T--;
 	}
 	//cout << "done" << endl;
-	cin.ignore();
-	cin.ignore();
+	//cin.ignore();
+	//cin.ignore();
 	return 0;
 }
