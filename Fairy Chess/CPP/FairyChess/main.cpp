@@ -1,15 +1,16 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include <cstdlib>
 
 using namespace std;
 
 int main(int argc, char** argv)
 {
-	vector<vector<vector<unsigned long long>>> move_op(0); //dynamic programming 3d vector base
-	vector<vector<bool>> pawns(0);
-	vector<vector<vector<pair<int, int>>>> net(0);
-	vector<pair<int, int>>::iterator it;
+	vector<vector<vector<unsigned long long> > > move_op(0); //dynamic programming 3d vector base
+	vector<vector<bool> > pawns(0);
+	vector<vector<vector<pair<int, int> > > > net(0);
+	vector<pair<int, int> >::iterator it;
 	int N; //size of grid
 	int M; //max number of turns
 	int T; //number of test cases
@@ -29,10 +30,10 @@ int main(int argc, char** argv)
 		cin >> N >> M >> S;
 		//cout << "got input" << endl;
 		//make 3d vector with size [M,N,N] and all initial values = 0
-		move_op.assign(M, vector<vector<unsigned long long>>(N, vector<unsigned long long>(N,0)));
+		move_op.assign(M, vector<vector<unsigned long long> >(N, vector<unsigned long long>(N,0)));
 		//2d vector with size [N,N] and all initial values = false;
 		pawns.assign(N, vector<bool>(N, false));
-		net.assign(N, vector<vector<pair<int, int>>>(N, vector<pair<int, int>>(0)));
+		net.assign(N, vector<vector<pair<int, int> > >(N, vector<pair<int, int> >(0)));
 		//cout << "vectors made" << endl;
 		//parse input board
 		for (j = 0; j < N; j++)
@@ -127,7 +128,7 @@ int main(int argc, char** argv)
 			}
 		}
 
-		cout << move_op[M - 1][x][y] << endl;
+		cout << (move_op[M - 1][x][y] % 1000000007) << endl;
 
 		T--;
 	}
