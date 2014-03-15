@@ -7,6 +7,7 @@
 //============================================================================
 
 #include <iostream>
+#include <string>
 #include <map>
 using namespace std;
 
@@ -16,22 +17,26 @@ class Trie_node {
 	Trie_node *parent;
 	map <char, Trie_node *> children;
 public:
+
 	Trie_node()	//used for root only
 	{
 		c = 0;
 		count = 0;
 		parent = NULL;
 	}
+
 	Trie_node(char c, Trie_node *parent)
 	{
 		this->c = c;
 		this->count = 1;
 		this->parent = parent;
 	}
+
 	void increment_count()
 	{
 		count++;
 	}
+
 	Trie_node *insert(char c)
 	{
 		map <char, Trie_node *>::iterator it;
@@ -47,31 +52,52 @@ public:
 			return node;
 		}
 	}
-	std::ostream &operator<<(std::ostream &os, Trie_node const &node) {
-	    if(node.parent == NULL)
-	    {
-	    	os << "Trie Node: [Root]";
-	    }
-	    else
-	    {
-	    	os << "Trie Node: [" << node.c << ":" << node.count << "]";
-	    }
+
+	void *insert(string s)
+	{
+		Trie_node *root = this;
+		for(char &c: s)
+		{
+			root = root->insert(c);
+		}
+	}
+
+	friend std::ostream &operator<<(std::ostream &os, Trie_node const &node);
+
+	static void pre_order_traverse(Trie_node *root)
+	{
+		if(root == NULL)
+			return;
+		cout << (*root) << '\n';
+		for(map <char, Trie_node *>::iterator it = root->children.begin(); it != root->children.end(); it++)
+			pre_order_traverse(it->second);
 	}
 };
 
-void pre_order_traverse(Trie_node *root)
-{
-	if(root == NULL)
-		return;
-	cout << root << '\n';
-	for(map <char, Trie_node *>::iterator it = root->children.begin(); it != root->children.end(); it++)
+std::ostream &operator<<(std::ostream &os, Trie_node const &node) {
+	if(node.parent == NULL)
 	{
-
+		return os << "Trie Node: [Root]";
+	}
+	else
+	{
+		return os << "Trie Node: [" << node.c << ":" << node.count << "]";
 	}
 }
 
 int main() {
 	Trie_node *root = new Trie_node();
-
+	string s;
+	cin >> s;
+	root->insert(s);
+	cin >> s;
+	root->insert(s);
+	cin >> s;
+	root->insert(s);
+	cin >> s;
+	root->insert(s);
+	cin >> s;
+	root->insert(s);
+	Trie_node::pre_order_traverse(root);
 	return 0;
 }
