@@ -16,6 +16,7 @@ int main() {
 	int j;
 	int N;
 	int *prices;
+	int *next_max;
 	int num_testcases = 0;
 	long long profit = 0;
 	long num_stocks = 0;

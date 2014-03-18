@@ -8,16 +8,15 @@ int main() {
 	
 	for(int i = 0; i < num_testcases; i++)
 	{
-		int N = 0;	//number of days of predicted stock prices
-		cin >> N;
-		int *prices = new int[N];
-		int input;
+		int N;	//number of stock prices
+		int *prices;
 
-		//get input and find max
+		cin >> N;
+		prices = new int[N];
+
 		for(int j = 0; j < N; j++)
 		{
-			cin >> input;
-			prices[j] = input;
+			cin >> prices[j];
 		}
 
 		int *next_max = new int[N+1];
@@ -28,7 +27,7 @@ int main() {
 
 		long profit = 0;
 		long num_stocks = 0;
-		//iterate from beginning to max
+
 		for(int i = 0; i < N; i++)
 		{
 			int price = prices[i];
