@@ -1,8 +1,4 @@
-import java.io.*;
-import java.math.BigInteger;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 class Main
 {
@@ -47,26 +43,25 @@ class Main
     			int min = Integer.MAX_VALUE;
     			
     			//loop through all combinations of coins
-    			for(int a = 0; a < numCoins; a++)
+    	 outer: for(int a = 0; a < numCoins; a++)
     				for(int b = a+1; b < numCoins; b++)
     					for(int c = b+1; c < numCoins; c++)
     						for(int d = c+1; d < numCoins; d++)
     						{
+                                //calculate least common multiple of 4 coins
     							//lcm(a,b,c,d) = lcm(lcm(a,b), lcm(c,d))
-    							int length = lcm(lcm(coin_heights[a], coin_heights[b]), lcm(coin_heights[c], coin_heights[d]));
-    							//System.out.println(length);
-    							int tMax = (tableHeight / length) * length;
-    							int tMin;
-    							if(tableHeight % length != 0)
-    							{
-    								tMin = (tableHeight / length + 1) * length;
-    							} else {
-    								tMin = (tableHeight / length) * length;
+    							int height = lcm(lcm(coin_heights[a], coin_heights[b]), lcm(coin_heights[c], coin_heights[d]));
+    							
+    							if(tableHeight % height == 0)
+    							{	//if it is divisible by tableHeight then we're done because the max and min are both tableHeight
+    								min = max = tableHeight;
+    								break outer;
     							}
-    							if(tMin < min)
-    								min = tMin;
-    							if(tMax > max)
-    								max = tMax;
+    							else
+    							{
+	    							max = Math.max(max, (tableHeight / height) * height);	//calculate max < tableHeight using integer division: (1000 / 400) * 400 = (2) * 400 = 800    						
+	    							min = Math.min(min, (tableHeight / height + 1) * height);	//same thing except get the multiple after the tableHeight	    								    							
+    							}
     						}
     			System.out.println(max + " " + min);
     		}
