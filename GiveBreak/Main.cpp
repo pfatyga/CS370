@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <iterator>
 #include <map>
+#include <string>
 #include <iomanip>
 
 using namespace std;
@@ -53,7 +54,7 @@ int main()
 		strncpy(buff, &line[1], 2); //prep buff for atoi
 		buff[2] = '\0'; //add end character
 		input_depart_id = (short)atoi(buff); //convert to (short)int
-		input_payment = (unsigned long)atoi(&line[3]);
+		input_payment = (unsigned long)atoi((((string)(&line[3])).substr(0,7)).c_str());
 
 		//cout << input_payment << endl;
 
