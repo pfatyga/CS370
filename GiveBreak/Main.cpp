@@ -52,7 +52,7 @@ int main()
 		input_depart_id = (short)atoi(buff); //convert to (short)int
 		input_payment = (unsigned long)atoi(&line[3]);
 
-		cout << input_payment << endl;
+		//cout << input_payment << endl;
 
 		absolute_total_employees++;
 		absolute_total_payroll += input_payment;
@@ -64,25 +64,29 @@ int main()
 		cin >> line; //get next line
 	}
 
+	cout << "\t\t\tBIGIANT UNIVERSITY\n\t\t\tPAYROLL EXPENSE REPORT\n\n";
+	cout << "SCHOOL\t\tDEPARTMENT\tNO. OF EMPLOYEES\tPAYROLL\n";
+	cout.imbue((locale(""))); //adds commas when printing out
 	for (int i = 0; i < 10; i++) //for each school
 	{
 		if (school_list[i].num_employees) //test if school is used
 		{
 			for (auto it = school_list[i].departments.begin(); it != school_list[i].departments.end(); it++)
 			{ //for each department within the school
-				cout << i << " "
-					<< it->first << " "
-					<< it->second.num_employees << " "
+				cout << i << "\t\t" //print department data
+					<< it->first << "\t\t"
+					<< it->second.num_employees << "\t\t\t"
 					<< fixed << setprecision(2) << (it->second.total_payroll / 100.0) << endl;
+				//("fixed << setprecision(2)" makes doubles display with 2 decimal digits only)
 			}
-			cout << "School tots: "
-				<< school_list[i].num_employees << " "
-				<< fixed <<setprecision(2) << (school_list[i].total_school_payroll/100.0) << endl;
+			cout << "\t\t*SCHOOL TOTALS*\t" //Print school data
+				<< school_list[i].num_employees << "\t\t\t"
+				<< fixed << setprecision(2) << (school_list[i].total_school_payroll/100.0) << "\n\n";
 		}
 	}
 
-	cout << "abs tots: "
-		<< absolute_total_employees << " "
+	cout << "\t**UNIVERSITY TOTALS*\t" //print total data
+		<< absolute_total_employees << "\t\t\t"
 		<< fixed << setprecision(2) << (absolute_total_payroll / 100.0) << endl;
 
 	return 0;
