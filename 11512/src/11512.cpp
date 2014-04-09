@@ -183,7 +183,6 @@ std::ostream &operator<<(std::ostream &os, Trie_node const &node) {
 int main() {
 	int n = 0;
 	cin >> n;
-	scanf("\n");
 	for(int i = 0; i < n; i++)
 	{
 		deepest_count = 0;
