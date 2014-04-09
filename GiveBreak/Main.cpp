@@ -1,5 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <iterator>
 #include <map>
 #include <iomanip>
 
@@ -71,7 +74,7 @@ int main()
 	{
 		if (school_list[i].num_employees) //test if school is used
 		{
-			for (auto it = school_list[i].departments.begin(); it != school_list[i].departments.end(); it++)
+			for (map<short, department>::iterator it = school_list[i].departments.begin(); it != school_list[i].departments.end(); it++)
 			{ //for each department within the school
 				cout << i << "\t\t" //print department data
 					<< it->first << "\t\t"

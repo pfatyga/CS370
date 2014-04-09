@@ -8,10 +8,17 @@
 
 #include <iostream>
 #include <algorithm>
+#include <cstring>
 #include <string>
 #include <vector>
 #include <map>
 using namespace std;
+
+unsigned int deepest_level = 0;	//keep track of the deepest internal node with count >= 2
+unsigned int deepest_count = 0;
+char *deepest_string = new char[1];
+char *current_string;
+unsigned int char_index = 0;
 
 class Trie_node {
 
@@ -57,9 +64,34 @@ public:
 	Trie_node *insert(char c)
 	{
 		map <char, Trie_node *>::iterator it;
+		char_index++;
 		if((it = children.find(c)) != children.end()) //if c exists in children just increment its count
 		{
 			it->second->increment_count();
+
+			//keep track of the deepest internal node with count > 2
+			if(it->second->level > deepest_level)
+			{
+				deepest_level = it->second->level;
+				deepest_count = it->second->count;
+				delete[] deepest_string;
+				deepest_string = new char[char_index+1];
+				strncpy(deepest_string, current_string, char_index);
+				deepest_string[char_index] = '\0';
+			}
+			else if(it->second->level == deepest_level)
+			{
+				if(strcmp(current_string, deepest_string) <= 0)
+				{
+					deepest_count = it->second->count;
+					delete[] deepest_string;
+					deepest_string = new char[char_index+1];
+					strncpy(deepest_string, current_string, char_index);
+					deepest_string[char_index] = '\0';
+				}
+			}
+			//////////////////////////////////////////////////////////
+
 			return it->second;
 		}
 		else	//else create and add it to the children map
@@ -70,12 +102,14 @@ public:
 		}
 	}
 
-	Trie_node *insert(string s)
+	Trie_node *insert(char *s)
 	{
 		Trie_node *root = this;
-		for(char &c: s)
+		current_string = s;
+		char_index = 0;
+		for(char *c = &s[0]; *c != '\0'; c++)
 		{
-			root = root->insert(c);
+			root = root->insert(*c);
 		}
 		return root;
 	}
@@ -84,7 +118,7 @@ public:
 	char *substring()
 	{
 		if(parent == NULL)
-			return "";
+			return NULL;
 		Trie_node *node = this;
 		char *ret = new char[level+1];
 		ret[level] = '\0';
@@ -147,19 +181,24 @@ std::ostream &operator<<(std::ostream &os, Trie_node const &node) {
 }
 
 int main() {
-	unsigned int n = 0;
+	int n = 0;
 	cin >> n;
+	scanf("\n");
 	for(int i = 0; i < n; i++)
 	{
+		deepest_count = 0;
+		deepest_level = 0;
+		current_string = 0;
+		deepest_string = 0;
 		Trie_node *root = new Trie_node();
-		string s;
+		char *s = new char[1001];
 		cin >> s;
-		for(unsigned int i = 0; i < s.length(); i++)
-			root->insert(s.substr(i));
+		for(char *c = &s[0]; *c != '\0'; c++)
+			root->insert(c);
 		//Trie_node::pre_order_print(root);
-		Trie_node max = Trie_node::max(root);
-		if(max.getCount() > 0)
-			cout << max.substring() << " " << max.getCount() << '\n';
+		//Trie_node max = Trie_node::max(root);
+		if(deepest_count >= 2)
+			cout << deepest_string << " " << deepest_count << '\n';
 		else
 			cout << "No repetitions found!\n";
 	}
